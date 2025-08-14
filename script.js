@@ -35,9 +35,35 @@ addBookToLibrary("1984", "George Orwell", 328, true);
 addBookToLibrary("A Game of Thrones", "G.R.R Martin", 694, true);
 addBookToLibrary("Pride and Prejudice", "Jane Austen", 448, false);
 
-const button = document.querySelector("#new-book-button");
+const newBookButton = document.querySelector("#new-book-button");
 
-button.addEventListener("click", (e) => {
-  // make form visible
+newBookButton.addEventListener("click", (e) => {
   document.querySelector(".form-popup").style.display = "block";
 });
+
+const addBookButton = document.querySelector("#add-book-button");
+
+addBookButton.addEventListener("click", (e) => {
+  const bookTitle = document.querySelector("#book-title").value;
+  const bookAuthor = document.querySelector("#book-author").value;
+  const bookPages = document.querySelector("#book-pages").value;
+  const bookReadYes = document.querySelector("#read-yes").checked;
+  const bookReadNo = document.querySelector("#read-no").checked;
+  let bookRead;
+  if (bookReadYes) {
+    bookRead = true;
+  } else if (bookReadNo) {
+    bookRead = false;
+  } else {
+    alert("Have you read this book?!");
+    return;
+  }
+  addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
+  e.preventDefault();
+});
+
+const cancelAddBook = document.querySelector('#cancel-add-book')
+
+cancelAddBook.addEventListener('click', e => {
+  document.querySelector(".form-popup").style.display = "none";
+})
