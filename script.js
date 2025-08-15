@@ -25,8 +25,23 @@ function addBookToLibrary(title, author, pages, read) {
 }
 
 function displayBooks() {
+  const tableBody = document.querySelector(".table-body");
+  tableBody.innerHTML = "";
   myLibrary.forEach((entry) => {
-    console.log(entry.title);
+    const tableRow = document.createElement("tr");
+    const title = document.createElement("td");
+    const author = document.createElement("td");
+    const pages = document.createElement("td");
+    const read = document.createElement("td");
+    title.textContent = entry.title;
+    author.textContent = entry.author;
+    pages.textContent = entry.pages;
+    read.textContent = entry.read;
+    tableRow.appendChild(title);
+    tableRow.appendChild(author);
+    tableRow.appendChild(pages);
+    tableRow.appendChild(read);
+    tableBody.appendChild(tableRow);
   });
 }
 
@@ -34,6 +49,8 @@ addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, false);
 addBookToLibrary("1984", "George Orwell", 328, true);
 addBookToLibrary("A Game of Thrones", "G.R.R Martin", 694, true);
 addBookToLibrary("Pride and Prejudice", "Jane Austen", 448, false);
+
+displayBooks();
 
 const newBookButton = document.querySelector("#new-book-button");
 
@@ -44,26 +61,39 @@ newBookButton.addEventListener("click", (e) => {
 const addBookButton = document.querySelector("#add-book-button");
 
 addBookButton.addEventListener("click", (e) => {
-  const bookTitle = document.querySelector("#book-title").value;
-  const bookAuthor = document.querySelector("#book-author").value;
-  const bookPages = document.querySelector("#book-pages").value;
-  const bookReadYes = document.querySelector("#read-yes").checked;
-  const bookReadNo = document.querySelector("#read-no").checked;
+  const bookTitle = document.querySelector("#book-title");
+  const bookAuthor = document.querySelector("#book-author");
+  const bookPages = document.querySelector("#book-pages");
+  const bookReadYes = document.querySelector("#read-yes");
+  const bookReadNo = document.querySelector("#read-no");
   let bookRead;
-  if (bookReadYes) {
+  if (bookReadYes.checked) {
     bookRead = true;
-  } else if (bookReadNo) {
+  } else if (bookReadNo.checked) {
     bookRead = false;
   } else {
     alert("Have you read this book?!");
+    e.preventDefault();
     return;
   }
-  addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
+  addBookToLibrary(
+    bookTitle.value,
+    bookAuthor.value,
+    bookPages.value,
+    bookRead
+  );
+  displayBooks();
+  bookTitle.value = "";
+  bookAuthor.value = "";
+  bookPages.value = "";
+  bookReadYes.checked = false;
+  bookReadNo.checked = false;
   e.preventDefault();
 });
 
-const cancelAddBook = document.querySelector('#cancel-add-book')
+const cancelAddBook = document.querySelector("#cancel-add-book");
 
-cancelAddBook.addEventListener('click', e => {
+cancelAddBook.addEventListener("click", (e) => {
   document.querySelector(".form-popup").style.display = "none";
-})
+  e.preventDefault();
+});
