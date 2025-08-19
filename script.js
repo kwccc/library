@@ -33,16 +33,32 @@ function displayBooks() {
     const author = document.createElement("td");
     const pages = document.createElement("td");
     const read = document.createElement("td");
+    const deleteButton = document.createElement("button");
+
     title.textContent = entry.title;
     author.textContent = entry.author;
     pages.textContent = entry.pages;
     read.textContent = entry.read;
+    deleteButton.textContent = "Delete";
+    deleteButton.classList = 'delete-book'
+    deleteButton.dataset.id = entry.id
+
     tableRow.appendChild(title);
     tableRow.appendChild(author);
     tableRow.appendChild(pages);
     tableRow.appendChild(read);
+    tableRow.appendChild(deleteButton);
     tableBody.appendChild(tableRow);
   });
+}
+
+function deleteBook(id) {
+  for (let i = 0; i < myLibrary.length; i++) {
+    if (myLibrary[i].id === id) {
+      myLibrary.splice(i, 1);
+    }
+  }
+  // displayBooks()
 }
 
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, false);
@@ -97,3 +113,12 @@ cancelAddBook.addEventListener("click", (e) => {
   document.querySelector(".form-popup").style.display = "none";
   e.preventDefault();
 });
+
+const deleteButtons = document.querySelectorAll('.delete-book')
+
+deleteButtons.forEach(deleteButton => {
+  deleteButton.addEventListener('click', e => {
+    console.log(deleteButton)
+    deleteBook(deleteButton.dataset.id)
+  })
+})
