@@ -22,6 +22,30 @@ function Book(title, author, pages, read) {
 function addBookToLibrary(title, author, pages, read) {
   const book = new Book(title, author, pages, read);
   myLibrary.push(book);
+
+  const tableBody = document.querySelector(".table-body");
+  const tableRow = document.createElement("tr");
+  const tableTitle = document.createElement("td");
+  const tableAuthor = document.createElement("td");
+  const tablePages = document.createElement("td");
+  const tableRead = document.createElement("td");
+  const deleteButton = document.createElement("button");
+
+  tableTitle.textContent = title;
+  tableAuthor.textContent = author;
+  tablePages.textContent = pages;
+  tableRead.textContent = book.read;
+
+  deleteButton.textContent = "Delete";
+  deleteButton.classList = "delete-book";
+  deleteButton.dataset.id = book.id;
+
+  tableRow.appendChild(tableTitle);
+  tableRow.appendChild(tableAuthor);
+  tableRow.appendChild(tablePages);
+  tableRow.appendChild(tableRead);
+  tableRow.appendChild(deleteButton);
+  tableBody.appendChild(tableRow);
 }
 
 function displayBooks() {
@@ -39,9 +63,10 @@ function displayBooks() {
     author.textContent = entry.author;
     pages.textContent = entry.pages;
     read.textContent = entry.read;
+
     deleteButton.textContent = "Delete";
-    deleteButton.classList = 'delete-book'
-    deleteButton.dataset.id = entry.id
+    deleteButton.classList = "delete-book";
+    deleteButton.dataset.id = entry.id;
 
     tableRow.appendChild(title);
     tableRow.appendChild(author);
@@ -56,9 +81,10 @@ function deleteBook(id) {
   for (let i = 0; i < myLibrary.length; i++) {
     if (myLibrary[i].id === id) {
       myLibrary.splice(i, 1);
+      const bookRow = document.querySelector(`[data-id="${id}"]`);
+      document.querySelector("table").deleteRow(bookRow.parentNode.rowIndex);
     }
   }
-  // displayBooks()
 }
 
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, false);
@@ -98,7 +124,6 @@ addBookButton.addEventListener("click", (e) => {
     bookPages.value,
     bookRead
   );
-  displayBooks();
   bookTitle.value = "";
   bookAuthor.value = "";
   bookPages.value = "";
@@ -114,11 +139,13 @@ cancelAddBook.addEventListener("click", (e) => {
   e.preventDefault();
 });
 
-const deleteButtons = document.querySelectorAll('.delete-book')
+const deleteButtons = document.querySelectorAll(".delete-book");
 
-deleteButtons.forEach(deleteButton => {
-  deleteButton.addEventListener('click', e => {
-    console.log(deleteButton)
-    deleteBook(deleteButton.dataset.id)
-  })
-})
+deleteButtons.forEach((deleteButton) => {
+  deleteButton.addEventListener("click", (e) => {
+    console.log(deleteButton);
+    deleteBook(deleteButton.dataset.id);
+  });
+});
+
+document.body.addEventListener;
