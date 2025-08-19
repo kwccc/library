@@ -8,21 +8,21 @@ function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
   this.pages = pages;
-  if (read) {
-    this.read = "read";
-  } else {
-    this.read = "not read yet";
-  }
+  this.read = read;
 
   this.info = function () {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`;
+  };
+
+  this.toggleRead = function () {
+    this.read = !this.read;
   };
 }
 
 function addBookToLibrary(title, author, pages, read) {
   const book = new Book(title, author, pages, read);
   myLibrary.push(book);
-  displayBook(book)
+  displayBook(book);
 }
 
 function displayBook(book) {
@@ -32,25 +32,46 @@ function displayBook(book) {
   const tableAuthor = document.createElement("td");
   const tablePages = document.createElement("td");
   const tableRead = document.createElement("td");
+  const deleteButtonCol = document.createElement("td");
+  const toggleReadButtonCol = document.createElement("td");
+
   const deleteButton = document.createElement("button");
+  const toggleReadButton = document.createElement("button");
+  deleteButtonCol.appendChild(deleteButton);
+  toggleReadButtonCol.appendChild(toggleReadButton);
 
   tableTitle.textContent = book.title;
   tableAuthor.textContent = book.author;
   tablePages.textContent = book.pages;
-  tableRead.textContent = book.read;
+
+  if (book.read) {
+    tableRead.textContent = "read";
+  } else {
+    tableRead.textContent = "not read yet";
+  }
 
   deleteButton.textContent = "Delete";
-  deleteButton.classList = "delete-book";
   deleteButton.dataset.id = book.id;
-  deleteButton.addEventListener('click', e => {
+  deleteButton.addEventListener("click", (e) => {
     deleteBook(deleteButton.dataset.id);
-  })
+  });
+
+  toggleReadButton.textContent = "Toggle";
+  toggleReadButton.addEventListener("click", (e) => {
+    book.toggleRead();
+    if (book.read) {
+      tableRead.textContent = "read";
+    } else {
+      tableRead.textContent = "not read yet";
+    }
+  });
 
   tableRow.appendChild(tableTitle);
   tableRow.appendChild(tableAuthor);
   tableRow.appendChild(tablePages);
   tableRow.appendChild(tableRead);
-  tableRow.appendChild(deleteButton);
+  tableRow.appendChild(deleteButtonCol);
+  tableRow.appendChild(toggleReadButtonCol);
   tableBody.appendChild(tableRow);
 }
 
@@ -59,7 +80,9 @@ function deleteBook(id) {
     if (myLibrary[i].id === id) {
       myLibrary.splice(i, 1);
       const bookRow = document.querySelector(`[data-id="${id}"]`);
-      document.querySelector("table").deleteRow(bookRow.parentNode.rowIndex);
+      document
+        .querySelector("table")
+        .deleteRow(bookRow.parentNode.parentNode.rowIndex);
     }
   }
 }
