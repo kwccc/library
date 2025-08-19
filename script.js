@@ -32,13 +32,9 @@ function displayBook(book) {
   const tableAuthor = document.createElement("td");
   const tablePages = document.createElement("td");
   const tableRead = document.createElement("td");
-  const deleteButtonCol = document.createElement("td");
-  const toggleReadButtonCol = document.createElement("td");
 
   const deleteButton = document.createElement("button");
   const toggleReadButton = document.createElement("button");
-  deleteButtonCol.appendChild(deleteButton);
-  toggleReadButtonCol.appendChild(toggleReadButton);
 
   tableTitle.textContent = book.title;
   tableAuthor.textContent = book.author;
@@ -70,8 +66,8 @@ function displayBook(book) {
   tableRow.appendChild(tableAuthor);
   tableRow.appendChild(tablePages);
   tableRow.appendChild(tableRead);
-  tableRow.appendChild(deleteButtonCol);
-  tableRow.appendChild(toggleReadButtonCol);
+  tableRow.appendChild(deleteButton);
+  tableRow.appendChild(toggleReadButton);
   tableBody.appendChild(tableRow);
 }
 
@@ -82,7 +78,7 @@ function deleteBook(id) {
       const bookRow = document.querySelector(`[data-id="${id}"]`);
       document
         .querySelector("table")
-        .deleteRow(bookRow.parentNode.parentNode.rowIndex);
+        .deleteRow(bookRow.parentNode.rowIndex);
     }
   }
 }
