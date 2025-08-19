@@ -22,7 +22,10 @@ function Book(title, author, pages, read) {
 function addBookToLibrary(title, author, pages, read) {
   const book = new Book(title, author, pages, read);
   myLibrary.push(book);
+  displayBook(book)
+}
 
+function displayBook(book) {
   const tableBody = document.querySelector(".table-body");
   const tableRow = document.createElement("tr");
   const tableTitle = document.createElement("td");
@@ -31,14 +34,17 @@ function addBookToLibrary(title, author, pages, read) {
   const tableRead = document.createElement("td");
   const deleteButton = document.createElement("button");
 
-  tableTitle.textContent = title;
-  tableAuthor.textContent = author;
-  tablePages.textContent = pages;
+  tableTitle.textContent = book.title;
+  tableAuthor.textContent = book.author;
+  tablePages.textContent = book.pages;
   tableRead.textContent = book.read;
 
   deleteButton.textContent = "Delete";
   deleteButton.classList = "delete-book";
   deleteButton.dataset.id = book.id;
+  deleteButton.addEventListener('click', e => {
+    deleteBook(deleteButton.dataset.id);
+  })
 
   tableRow.appendChild(tableTitle);
   tableRow.appendChild(tableAuthor);
@@ -46,35 +52,6 @@ function addBookToLibrary(title, author, pages, read) {
   tableRow.appendChild(tableRead);
   tableRow.appendChild(deleteButton);
   tableBody.appendChild(tableRow);
-}
-
-function displayBooks() {
-  const tableBody = document.querySelector(".table-body");
-  tableBody.innerHTML = "";
-  myLibrary.forEach((entry) => {
-    const tableRow = document.createElement("tr");
-    const title = document.createElement("td");
-    const author = document.createElement("td");
-    const pages = document.createElement("td");
-    const read = document.createElement("td");
-    const deleteButton = document.createElement("button");
-
-    title.textContent = entry.title;
-    author.textContent = entry.author;
-    pages.textContent = entry.pages;
-    read.textContent = entry.read;
-
-    deleteButton.textContent = "Delete";
-    deleteButton.classList = "delete-book";
-    deleteButton.dataset.id = entry.id;
-
-    tableRow.appendChild(title);
-    tableRow.appendChild(author);
-    tableRow.appendChild(pages);
-    tableRow.appendChild(read);
-    tableRow.appendChild(deleteButton);
-    tableBody.appendChild(tableRow);
-  });
 }
 
 function deleteBook(id) {
@@ -91,8 +68,6 @@ addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, false);
 addBookToLibrary("1984", "George Orwell", 328, true);
 addBookToLibrary("A Game of Thrones", "G.R.R Martin", 694, true);
 addBookToLibrary("Pride and Prejudice", "Jane Austen", 448, false);
-
-displayBooks();
 
 const newBookButton = document.querySelector("#new-book-button");
 
@@ -138,14 +113,3 @@ cancelAddBook.addEventListener("click", (e) => {
   document.querySelector(".form-popup").style.display = "none";
   e.preventDefault();
 });
-
-const deleteButtons = document.querySelectorAll(".delete-book");
-
-deleteButtons.forEach((deleteButton) => {
-  deleteButton.addEventListener("click", (e) => {
-    console.log(deleteButton);
-    deleteBook(deleteButton.dataset.id);
-  });
-});
-
-document.body.addEventListener;
